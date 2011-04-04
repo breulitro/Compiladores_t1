@@ -21,7 +21,6 @@ quit					exit(0);
 \/						return DIVIDIR;
 
 \r?\n					yylineno++;
-%\n						/* ignore end of line */;
 [ \t]+					/* ignore whitespace */;
 .						exit(-3);
 %%
