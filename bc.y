@@ -6,8 +6,7 @@
 
 extern int yylineno;
 
-void yyerror(const char *str)
-{
+void yyerror(const char *str) {
 	fprintf(stderr, "error: %s at line %d.\n", str, yylineno);
 }
 
@@ -36,8 +35,7 @@ void usage() {
 	exit(-1);
 }
 
-main(int argc, char *argv[])
-{
+main(int argc, char *argv[]) {
 	if (argc == 2)
 		if (!strcmp(argv[1], "-v"))
 			print_version();
@@ -49,7 +47,8 @@ main(int argc, char *argv[])
 
 %}
 
-%token NUMERO IDENTIFICADOR MAIS MENOS VEZES DIVIDIR
+%token NUMERO IDENTIFICADOR MAIS MENOS VEZES DIVIDIR RECEBE
+%token GE LE EQ NE;
 %token IF ELSE WHILE FOR
 %%
 

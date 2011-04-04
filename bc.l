@@ -15,10 +15,16 @@ for						return FOR;
 quit					exit(0);
 [a-zA-Z][a-zA-Z0-9]*	return IDENTIFICADOR;
 
-\-						return MENOS;
-\+						return MAIS;
-\*						return VEZES;
-\/						return DIVIDIR;
+"-"						return MENOS;
+"+"						return MAIS;
+"*"						return VEZES;
+"/"						return DIVIDIR;
+"="						return RECEBE;
+
+">="					return GE;
+"<="					return LE;
+"=="					return EQ;
+"!="					return NE;
 
 \r?\n					yylineno++;
 [ \t]+					/* ignore whitespace */;
