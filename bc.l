@@ -13,7 +13,7 @@ for						return FOR;
 
 [0-9]+					yylval = atoi(yytext); return NUMERO;
 quit					exit(0);
-[a-zA-Z][a-zA-Z0-9]*	return IDENTIFICADOR;
+[a-zA-Z][a-zA-Z0-9]*	return ID;
 
 "-"						return MENOS;
 "+"						return MAIS;

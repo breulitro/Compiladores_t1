@@ -47,7 +47,7 @@ main(int argc, char *argv[]) {
 
 %}
 
-%token NUMERO IDENTIFICADOR MAIS MENOS VEZES DIVIDIR RECEBE
+%token NUMERO ID MAIS MENOS VEZES DIVIDIR RECEBE
 %token GE LE EQ NE;
 %token IF ELSE WHILE FOR
 %%
