@@ -28,6 +28,8 @@ quit					exit(0);
 
 \r?\n					yylineno++;
 [ \t]+					/* ignore whitespace */;
-.						exit(-3);
+.						{	printf("error: lexical error at line %d.\n", yylineno);
+							exit(-3);
+						}
 %%
 
