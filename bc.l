@@ -6,15 +6,23 @@
 /* %option yylineno */
 
 %%
+if						return IF;
+else					return ELSE;
+while					return WHILE;
+for						return FOR;
+
 [0-9]+					yylval = atoi(yytext); return NUMERO;
 quit					exit(0);
 [a-zA-Z][a-zA-Z0-9]*	return IDENTIFICADOR;
+
 \-						return MENOS;
 \+						return MAIS;
 \*						return VEZES;
 \/						return DIVIDIR;
-\n					/* ignore end of line */;
-[ \t]+				/* ignore whitespace */;
-.					/* unrecognized char */exit(-3);
+
+\r?\n					yylineno++;
+%\n						/* ignore end of line */;
+[ \t]+					/* ignore whitespace */;
+.						exit(-3);
 %%
 

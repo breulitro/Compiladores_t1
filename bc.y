@@ -3,9 +3,12 @@
 #include <string.h>
 #include <stdlib.h>
 
+
+extern int yylineno;
+
 void yyerror(const char *str)
 {
-	fprintf(stderr,"error: %s\n",str);
+	fprintf(stderr, "error: %s at line %d.\n", str, yylineno);
 }
 
 int yywrap()
@@ -32,7 +35,7 @@ void usage() {
 			"-v\tPrints Program Description\n");
 	exit(-1);
 }
-extern int yylineno;
+
 main(int argc, char *argv[])
 {
 	if (argc == 2)
@@ -47,6 +50,7 @@ main(int argc, char *argv[])
 %}
 
 %token NUMERO IDENTIFICADOR MAIS MENOS VEZES DIVIDIR
+%token IF ELSE WHILE FOR
 %%
 
 commands: /* empty */
