@@ -28,7 +28,7 @@ quit					exit(0);
 
 \r?\n					yylineno++;
 [ \t]+					/* ignore whitespace */;
-.						{	printf("error: lexical error at line %d.\n", yylineno);
+.						{	printf("error: unknown token \"%s\" at line %d.\n", yytext, yylineno);
 							exit(-3);
 						}
 %%
