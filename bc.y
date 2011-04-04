@@ -16,7 +16,7 @@ int yywrap()
 void print_version() {
 	printf("\nPUCRS - 2011-01\n"
 			"Disciplina: Compiladores\n"
-			"Professor: Lulu Santos\n");
+			"Professor: Alexandre Agustini\n");
 	printf( "Aluno: %s\n\tMatricula: %s\n"
 			"Aluno: %s\n\tMatricula: %s\n",
 			"Cristiano Bolla Fernandes",
