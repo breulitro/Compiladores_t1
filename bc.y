@@ -32,7 +32,7 @@ void usage() {
 			"-v\tPrints Program Description\n");
 	exit(-1);
 }
-
+extern int yylineno;
 main(int argc, char *argv[])
 {
 	if (argc == 2)
@@ -41,6 +41,7 @@ main(int argc, char *argv[])
 		else
 			usage();
 	yyparse();
+	printf("Processed %d lines\n", yylineno);
 }
 
 %}
