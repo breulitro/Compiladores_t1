@@ -61,18 +61,36 @@ command :
 		;
 
 operacao:
-		NUMERO OP NUMERO
+		NUMERO MENOS NUMERO
+		{
+			printf("%d - %d = TODO:¬)\n", $1, $3);
+		}
+		|NUMERO MAIS NUMERO
 		{
 			printf("%d + %d = TODO:¬)\n", $1, $3);
 		}
-		|MAIS NUMERO
+		|NUMERO DIVIDIR NUMERO
 		{
-			printf("nova Regraz\n");
+			printf("%d / %d = TODO:¬)\n", $1, $3);
+		}
+		|NUMERO VEZES NUMERO
+		{
+			printf("%d * %d = TODO:¬)\n", $1, $3);
+		}
+		|operacao MAIS NUMERO
+		{
+			printf(" + %d = TODO:¬)\n", $3);
+		}
+		|operacao MENOS NUMERO
+		{
+			printf(" - %d = TODO:¬)\n", $3);
+		}
+		|operacao DIVIDIR NUMERO
+		{
+			printf(" / %d = TODO:¬)\n", $3);
+		}
+		|operacao VEZES NUMERO
+		{
+			printf(" * %d = TODO:¬)\n", $3);
 		}
 		;
-OP:
-	MAIS
-	|MENOS
-	|VEZES
-	|DIVIDIR
-	;
