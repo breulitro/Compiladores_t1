@@ -20,7 +20,7 @@ void print_version() {
 	printf( "Aluno: %s\n\tMatricula: %s\n"
 			"Aluno: %s\n\tMatricula: %s\n",
 			"Cristiano Bolla Fernandes",
-			"TODO",
+			"052800042-1",
 			"Benito O.J.R.L.M.S.",
 			"05202815-6");
 	printf("\n\e[31mTODO:\e[0m Breve Descrição do trabalho\n");
