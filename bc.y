@@ -57,7 +57,7 @@ command :
 		;
 
 operacao:
-		NUMERO MAIS NUMERO
+		NUMERO OP NUMERO
 		{
 			printf("%d + %d = TODO:¬)\n", $1, $3);
 		}
@@ -66,3 +66,9 @@ operacao:
 			printf("nova Regraz\n");
 		}
 		;
+OP:
+	MAIS
+	|MENOS
+	|VEZES
+	|DIVIDIR
+	;
