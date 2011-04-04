@@ -32,7 +32,7 @@ void usage() {
 			"-v\tPrints Program Description\n");
 	exit(-1);
 }
-
+extern int yylineno;
 main(int argc, char *argv[])
 {
 	if (argc == 2)
@@ -41,6 +41,7 @@ main(int argc, char *argv[])
 		else
 			usage();
 	yyparse();
+	printf("Processed %d lines\n", yylineno);
 }
 
 %}
@@ -57,7 +58,7 @@ command :
 		;
 
 operacao:
-		NUMERO MAIS NUMERO
+		NUMERO OP NUMERO
 		{
 			printf("%d + %d = TODO:¬)\n", $1, $3);
 		}
@@ -66,3 +67,9 @@ operacao:
 			printf("nova Regraz\n");
 		}
 		;
+OP:
+	MAIS
+	|MENOS
+	|VEZES
+	|DIVIDIR
+	;

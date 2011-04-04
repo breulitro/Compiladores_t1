@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include "bc.tab.h"
 %}
+
+/* %option yylineno */
+
 %%
 [0-9]+					yylval = atoi(yytext); return NUMERO;
 quit					exit(0);
@@ -12,5 +15,6 @@ quit					exit(0);
 \/						return DIVIDIR;
 \n					/* ignore end of line */;
 [ \t]+				/* ignore whitespace */;
+.					/* unrecognized char */exit(-3);
 %%
 
