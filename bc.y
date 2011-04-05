@@ -6,13 +6,16 @@
 int vars[26];	//FIXME: o lexico suporta alocação dinamica
 
 extern int yylineno;
+void var_cleanup();
 
 void yyerror(const char *str) {
+	var_cleanup();
 	fprintf(stderr, "error: %s at line %d.\n", str, yylineno);
 }
 
 int yywrap()
 {
+	//FIXME: as vezes ele se perde e nao le o Ctrl+D
 	return 1;
 }
 
@@ -43,6 +46,7 @@ main(int argc, char *argv[]) {
 		else
 			usage();
 	yyparse();
+	var_cleanup();
 	printf("Processed %d lines\n", yylineno);
 }
 
@@ -65,10 +69,10 @@ command :
 		;
 
 aindanaousados:
-		IF		{printf("IGNORED\n");}
-		|ELSE	{printf("IGNORED\n");}
-		|WHILE	{printf("IGNORED\n");}
-		|FOR	{printf("IGNORED\n");}
+		IF		{printf("IF\n");}
+		|ELSE	{printf("ELSE\n");}
+		|WHILE	{printf("WHILE\n");}
+		|FOR	{printf("FOR\n");}
 		;
 
 operacao:

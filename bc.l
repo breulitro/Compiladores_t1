@@ -12,7 +12,7 @@ struct var {
 
 int varcont = 0;
 int getvar();
-
+void var_cleanup();
 %}
 
 /* %option yylineno */
@@ -103,4 +103,14 @@ int getvar(char *n) {
 	}
 	return i;
 
+}
+
+void var_cleanup() {
+	struct var *aux = head;
+	while (head) {
+		free(head->nome);
+		free(head);
+		head = aux;
+	}
+	printf("Cleaned\n");
 }
