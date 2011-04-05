@@ -13,7 +13,7 @@ for						return FOR;
 
 [0-9]+					yylval = atoi(yytext); return NUMERO;
 quit					exit(0);
-[a-zA-Z][a-zA-Z0-9]*	return ID;
+[a-zA-Z][a-zA-Z0-9]*	/*yylval = varcont();*/return ID;
 
 "-"						return MENOS;
 "+"						return MAIS;
@@ -26,10 +26,12 @@ quit					exit(0);
 "=="					return EQ;
 "!="					return NE;
 
+"("						return BE;
+")"						return EE;
+
 \r?\n					yylineno++;
 [ \t]+					/* ignore whitespace */;
 .						{	printf("error: unknown token \"%s\" at line %d.\n", yytext, yylineno);
 							exit(-3);
 						}
 %%
-

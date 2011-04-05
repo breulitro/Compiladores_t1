@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 
+int vars[26];	//[a-z]
 
 extern int yylineno;
 
@@ -50,6 +51,7 @@ main(int argc, char *argv[]) {
 %token NUMERO ID MAIS MENOS VEZES DIVIDIR RECEBE
 %token GE LE EQ NE;
 %token IF ELSE WHILE FOR
+%token BE EE
 %%
 
 commands: /* empty */
@@ -57,40 +59,39 @@ commands: /* empty */
 		;
 
 command :
-		operacao
+		operacao				{ printf("%d\n", $1);}
+		|ID RECEBE operacao		{ vars[$1] = $3 }
+		|aindanaousados
+		;
+
+aindanaousados:
+		IF		{printf("IGNORED\n");}
+		|ELSE	{printf("IGNORED\n");}
+		|WHILE	{printf("IGNORED\n");}
+		|FOR	{printf("IGNORED\n");}
 		;
 
 operacao:
-		NUMERO MENOS NUMERO
+		NUMERO
+		|ID
+		|operacao MAIS operacao
 		{
-			printf("%d - %d = TODO:¬)\n", $1, $3);
+			$$ = $1 + $2;
 		}
-		|NUMERO MAIS NUMERO
+		|operacao MENOS operacao
 		{
-			printf("%d + %d = TODO:¬)\n", $1, $3);
+			$$ = $1 - $2;
 		}
-		|NUMERO DIVIDIR NUMERO
+		|operacao DIVIDIR operacao
 		{
-			printf("%d / %d = TODO:¬)\n", $1, $3);
+			$$ = $1 / $2;
 		}
-		|NUMERO VEZES NUMERO
+		|operacao VEZES operacao
 		{
-			printf("%d * %d = TODO:¬)\n", $1, $3);
+			$$ = $1 * $2;
 		}
-		|operacao MAIS NUMERO
+		|BE operacao EE
 		{
-			printf(" + %d = TODO:¬)\n", $3);
-		}
-		|operacao MENOS NUMERO
-		{
-			printf(" - %d = TODO:¬)\n", $3);
-		}
-		|operacao DIVIDIR NUMERO
-		{
-			printf(" / %d = TODO:¬)\n", $3);
-		}
-		|operacao VEZES NUMERO
-		{
-			printf(" * %d = TODO:¬)\n", $3);
+			$$ = $2;
 		}
 		;
