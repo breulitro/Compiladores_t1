@@ -51,7 +51,7 @@ quit					exit(0);
 							exit(-3);
 						}
 %%
-int _procura_pelo_nome(struct var *v, char *n) {
+static int _procura_pelo_nome(struct var *v, char *n) {
 	if (v) {
 		if (debug)
 			printf("Comparando <%s> == <%s>\t[", v->nome, n);
@@ -71,7 +71,7 @@ int _procura_pelo_nome(struct var *v, char *n) {
 	}
 }
 
-int procura_pelo_nome(char *n) {
+static int procura_pelo_nome(char *n) {
 	if (debug)
 		printf("Procurando pela variavel <%s>\n", n);
 	if (n)
