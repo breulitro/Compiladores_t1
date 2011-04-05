@@ -45,11 +45,11 @@ main(int argc, char *argv[]) {
 			print_version();
 		else
 			usage();
+
 	yyparse();
 	var_cleanup();
 	printf("Processed %d lines\n", yylineno);
 }
-
 %}
 
 %token NUMERO ID MAIS MENOS VEZES DIVIDIR RECEBE
@@ -69,10 +69,10 @@ command :
 		;
 
 aindanaousados:
-		IF		{printf("IF\n");}
-		|ELSE	{printf("ELSE\n");}
-		|WHILE	{printf("WHILE\n");}
-		|FOR	{printf("FOR\n");}
+		IF		{ printf("IF\n"); }
+		|ELSE	{ printf("ELSE\n"); }
+		|WHILE	{ printf("WHILE\n"); }
+		|FOR	{ printf("FOR\n"); }
 		;
 
 operacao:
