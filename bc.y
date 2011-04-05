@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-int vars[26];	//[a-z]
+int vars[26];	//FIXME: o lexico suporta alocação dinamica
 
 extern int yylineno;
 
@@ -51,11 +51,11 @@ main(int argc, char *argv[]) {
 %token NUMERO ID MAIS MENOS VEZES DIVIDIR RECEBE
 %token GE LE EQ NE;
 %token IF ELSE WHILE FOR
-%token BE EE
+%token BE EE FIM
 %%
 
 commands: /* empty */
-		| commands command
+		| commands command FIM
 		;
 
 command :
@@ -74,6 +74,9 @@ aindanaousados:
 operacao:
 		NUMERO
 		|ID
+		{
+			$$ = vars[$1];
+		}
 		|operacao MAIS operacao
 		{
 			$$ = $1 + $2;

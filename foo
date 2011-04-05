@@ -1,7 +1,11 @@
 if
-8+3+5*3
-8+(3+5)*3
-(8+3)+5*3
-(8+3+5)*3
+abacaxi  = 8+3+5*3
+rabanete = 8+(3+5)*3
+amora3  = (8+3)+5*3
+porcoziona = (8+3+5)*3
 for
+abacaxi
+rabanete
+amora3
+porcoziona
 quit
