@@ -83,19 +83,19 @@ operacao:
 		}
 		|operacao MAIS operacao
 		{
-			$$ = $1 + $2;
+			$$ = $1 + $3;
 		}
 		|operacao MENOS operacao
 		{
-			$$ = $1 - $2;
+			$$ = $1 - $3;
 		}
 		|operacao DIVIDIR operacao
 		{
-			$$ = $1 / $2;
+			$$ = $1 / $3;
 		}
 		|operacao VEZES operacao
 		{
-			$$ = $1 * $2;
+			$$ = $1 * $3;
 		}
 		|BE operacao EE
 		{
