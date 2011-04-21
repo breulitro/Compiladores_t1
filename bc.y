@@ -3,6 +3,10 @@
 #include <string.h>
 #include <stdlib.h>
 
+#ifdef DEBUG
+#include "debug.h"
+#endif
+
 int vars[26];	//FIXME: o lexico suporta alocação dinamica
 
 extern int yylineno;
@@ -51,38 +55,89 @@ main(int argc, char *argv[]) {
 	printf("Processed %d lines\n", yylineno);
 }
 %}
-%token NUMERO ID MAIS MENOS VEZES DIVIDIR RECEBE
-%token GE LE EQ NE;
-%token IF ELSE WHILE FOR
-%token BE EE FIM
+%token FOR WHILE IF ELSE
+%token ID NUMBER
+%token INCR_DECR ASSIGN_OP BINFUNC REL_OP
+%token DEFINE LID
+
+%token AUTO RETURN SQRT BREAK IBASE OBASE STRING INCR_OP FIM
 %%
-
-commands
-	: /* empty */
-	| commands command FIM
-	;
-command
-	:operacao	{ printf("%d\n", $1);}
-	|ID			{printf("Reconheci Identificador\n");}
-	RECEBE		{printf("Hoooray!!\n");}
-	operacao	{ vars[$1] = $3 }
-	|aindanaousados
-	;
-
-aindanaousados
+comandos
 	:
-	IF		{ printf("IF\n"); }
-	|ELSE	{ printf("ELSE\n"); }
-	|WHILE	{ printf("WHILE\n"); }
-	|FOR	{ printf("FOR\n"); }
+	|comandos bloco_de_comando FIM
+	;
+bloco_de_comando
+	:
+	|expression					{printf("%d\n", $1);}
+	|loop						{printf("_LOOP ");}
+	|conditional_statement		{printf("_CONDITIONAL_STATEMENT ");}
+	|decl_func					{printf("_DECL_FUNC ");}
+	|'{' bloco_de_comando '}'	{printf("_BLOCO_DE_COMANDO_COM_CHAVES ");}
+	;
+decl_func
+	:DEFINE ID '(' params ')' bloco_de_comando
+	;
+params
+	:
+	|LID resto_params
+	;
+resto_params
+	:
+	|resto_params ',' LID
+	;
+loop
+	:FOR '(' expression ';' expression ';' expression ')' bloco_de_comando
+	|WHILE '(' expression ')' bloco_de_comando
+	;
+conditional_statement
+	:IF '(' expression ')' bloco_de_comando conditional_resto
+	;
+conditional_resto
+	:/*Assim fica explicito que está incluído a produção vazia :¬D*/
+	|ELSE bloco_de_comando
+	;
+expression
+	:element				{ $$ = $1; }
+	/*|expression_list*/
+	|ID '=' expression		{vars[$1] = $3; TODO("Declaração implícita");}
+	|'(' element ')'
+	|'-' element
+	|INCR_DECR	{ FIXME("Bug: [\"--\"|\"++\"] ID");}
+		ID		/*{ $$ = ($1[0] == '+') ? ++vars[$2] : --vars[$2];}*/
+	|ID INCR_DECR	/*{ $$ = ($2[0] == '+') ? ++vars[$1] : --vars[$1]; }*/
+	|ID ASSIGN_OP expression	{ FIXME("deve tá quebrada, bem como '++' e '--'"); }
+	|element BINFUNC expression {
+		switch($2) {
+			case '-':
+				$$ = $1 - $3;
+				break;
+			case '+':
+				$$ = $1 + $3;
+				break;
+			case '*':
+				$$ = $1 * $3;
+				break;
+			case '/':
+				$$ = $1 / $3;
+				break;
+			case '%':
+				$$ = $1 % $3;
+				break;
+			case '^':
+				$$ = $1 ^ $3; //FIXME: checar se no bc tem a mesma semantica
+				break;
+		}
+		//$$ = $1 + $3;
+	}
+	|expression REL_OP expression
 	;
 
-operacao
-	:NUMERO
-	|ID							{ $$ = vars[$1]; }
-	|operacao MAIS operacao		{ $$ = $1 + $3; }
-	|operacao MENOS operacao	{ $$ = $1 - $3; }
-	|operacao DIVIDIR operacao	{ $$ = $1 / $3;	}
-	|operacao VEZES operacao	{ $$ = $1 * $3;	}
-	|BE operacao EE				{ $$ = $2; }
+/*expression_list
+	:expression
+	|expression ',' expression_list
+	;
+	*/
+element
+	:ID		{ $$ = vars[$1]; }
+	|NUMBER /* { $$ = $1 } */
 	;
