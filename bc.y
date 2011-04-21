@@ -51,54 +51,38 @@ main(int argc, char *argv[]) {
 	printf("Processed %d lines\n", yylineno);
 }
 %}
-
 %token NUMERO ID MAIS MENOS VEZES DIVIDIR RECEBE
 %token GE LE EQ NE;
 %token IF ELSE WHILE FOR
 %token BE EE FIM
 %%
 
-commands: /* empty */
-		| commands command FIM
-		;
+commands
+	: /* empty */
+	| commands command FIM
+	;
+command
+	:operacao	{ printf("%d\n", $1);}
+	|ID			{printf("Reconheci Identificador\n");}
+	RECEBE		{printf("Hoooray!!\n");}
+	operacao	{ vars[$1] = $3 }
+	|aindanaousados
+	;
 
-command :
-		operacao				{ printf("%d\n", $1);}
-		|ID RECEBE operacao		{ vars[$1] = $3 }
-		|aindanaousados
-		;
+aindanaousados
+	:
+	IF		{ printf("IF\n"); }
+	|ELSE	{ printf("ELSE\n"); }
+	|WHILE	{ printf("WHILE\n"); }
+	|FOR	{ printf("FOR\n"); }
+	;
 
-aindanaousados:
-		IF		{ printf("IF\n"); }
-		|ELSE	{ printf("ELSE\n"); }
-		|WHILE	{ printf("WHILE\n"); }
-		|FOR	{ printf("FOR\n"); }
-		;
-
-operacao:
-		NUMERO
-		|ID
-		{
-			$$ = vars[$1];
-		}
-		|operacao MAIS operacao
-		{
-			$$ = $1 + $3;
-		}
-		|operacao MENOS operacao
-		{
-			$$ = $1 - $3;
-		}
-		|operacao DIVIDIR operacao
-		{
-			$$ = $1 / $3;
-		}
-		|operacao VEZES operacao
-		{
-			$$ = $1 * $3;
-		}
-		|BE operacao EE
-		{
-			$$ = $2;
-		}
-		;
+operacao
+	:NUMERO
+	|ID							{ $$ = vars[$1]; }
+	|operacao MAIS operacao		{ $$ = $1 + $3; }
+	|operacao MENOS operacao	{ $$ = $1 - $3; }
+	|operacao DIVIDIR operacao	{ $$ = $1 / $3;	}
+	|operacao VEZES operacao	{ $$ = $1 * $3;	}
+	|BE operacao EE				{ $$ = $2; }
+	;
