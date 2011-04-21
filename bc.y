@@ -57,7 +57,6 @@ main(int argc, char *argv[]) {
 %}
 %token FOR WHILE IF ELSE
 %token ID NUMBER
-%token INCR_DECR ASSIGN_OP BINFUNC REL_OP
 %token DEFINE LID
 
 %token AUTO RETURN SQRT BREAK IBASE OBASE STRING INCR_OP FIM
@@ -107,36 +106,65 @@ expression
 	|ID INCR_DECR	/*{ $$ = ($2[0] == '+') ? ++vars[$1] : --vars[$1]; }*/
 	|ID ASSIGN_OP expression	{ FIXME("deve tá quebrada, bem como '++' e '--'"); }
 	|element BINFUNC expression {
-		switch($2) {
-			case '-':
-				$$ = $1 - $3;
-				break;
-			case '+':
-				$$ = $1 + $3;
-				break;
-			case '*':
-				$$ = $1 * $3;
-				break;
-			case '/':
-				$$ = $1 / $3;
-				break;
-			case '%':
-				$$ = $1 % $3;
-				break;
-			case '^':
-				$$ = $1 ^ $3; //FIXME: checar se no bc tem a mesma semantica
-				break;
+		YDBG("\e[35mcaiu no [element BINFUNC expression]\n");
+		switch ($2) {
+		case 0:
+			$$ = $1 + $3;
+			break;
+		case 1:
+			$$ = $1 - $3;
+			break;
+		case 2:
+			$$ = $1 * $3;
+			break;
+		case 3:
+			$$ = $1 / $3;
+			break;
+		case 4:
+			$$ = $1 ^ $3;	//TODO: vide todo ver-0.1
+			break;
+		case 5:
+			$$ = $1 % $3;
+			break;
+		default:
+			DBG("Não era prá cair aqui...\n");
+			exit(0);
 		}
-		//$$ = $1 + $3;
+
 	}
 	|expression REL_OP expression
 	;
-
-/*expression_list
-	:expression
-	|expression ',' expression_list
+BINFUNC
+	:'+'	{ YDBG("[BINFUNC::'+'] "); $$ = 0; }
+	|'-'	{ YDBG("[BINFUNC::'-'] "); $$ = 1; }
+	|'*'	{ YDBG("[BINFUNC::'*'] "); $$ = 2; }
+	|'/'	{ YDBG("[BINFUNC::'/'] "); $$ = 3; }
+	|'^'	{ YDBG("[BINFUNC::'^'] "); $$ = 4; }
+	|'%'	{ YDBG("[BINFUNC::'%'] "); $$ = 5; }
 	;
-	*/
+
+REL_OP
+	:"<="	{ $$ = 0; }
+	|">="	{ $$ = 1; }
+	|">"	{ $$ = 2; }
+	|"<"	{ $$ = 3; }
+	|"=="	{ $$ = 4; }
+	;
+
+ASSIGN_OP
+	:"-="	{ $$ = 0; }
+	|"+="	{ $$ = 1; }
+	|"*="	{ $$ = 2; }
+	|"/="	{ $$ = 3; }
+	|"%="	{ $$ = 4; }
+	|"^="	{ $$ = 5; }
+	|"="	{ $$ = 6; }
+	;
+
+INCR_DECR
+	:"++"	{ $$ = 0; }
+	|"--"	{ $$ = 1; }
+	;
 element
 	:ID		{ $$ = vars[$1]; }
 	|NUMBER /* { $$ = $1 } */

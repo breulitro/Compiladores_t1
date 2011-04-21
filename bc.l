@@ -5,52 +5,55 @@
 #include <stdlib.h>
 #include "bc.tab.h"
 #include "bc.h"
-
 %}
 /* %option outfile="bc.lex.c" header-file="bc.lex.h" */
 /* %option yylineno */
 
 %%
-"/*"		{ printf("BEGIN COMMENTS "); comment(); }
+"/*"		{ DBG("BEGIN COMMENTS "); comment(); }
 
-quit		{ printf("Bye! :-)\n"); exit(0); }
-if			{ printf("IF "); return IF; }
-else		{ printf("ELSE "); return ELSE; }
-while		{ printf("WHILE "); return WHILE; }
-for			{ printf("FOR "); return FOR; }
-define		{ printf("DEFINE "); return DEFINE; }
-auto		{ printf("AUTO "); return AUTO; }
-return		{ printf("RETURN "); return RETURN; }
+quit		{ DBG("Bye! :-)\n"); exit(0); }
+if			{ DBG("IF "); return IF; }
+else		{ DBG("ELSE "); return ELSE; }
+while		{ DBG("WHILE "); return WHILE; }
+for			{ DBG("FOR "); return FOR; }
+define		{ DBG("DEFINE "); return DEFINE; }
+auto		{ DBG("AUTO "); return AUTO; }
+return		{ DBG("RETURN "); return RETURN; }
 
-sqrt		{ printf("SQRT "); return SQRT; }
-break		{ printf("BREAK "); return BREAK; }
-ibase		{ printf("IBASE "); return IBASE; }
-obase		{ printf("OBASE "); return OBASE; }
+sqrt		{ DBG("SQRT "); return SQRT; }
+break		{ DBG("BREAK "); return BREAK; }
+ibase		{ DBG("IBASE "); return IBASE; }
+obase		{ DBG("OBASE "); return OBASE; }
 
-[0-9]+		{ yylval = atoi(yytext); printf("NUMBER "); return NUMBER; }
-"."			{ printf(". "); return '.'; }
-[a-zA-Z][a-zA-Z0-9]*			{ yylval = getvar(yytext); printf("ID "); return ID; }
-[a-zA-Z_]?\"(\\.|[^\\"])*\"		{ printf("STRING "); return STRING; }
+[0-9]+		{ yylval = atoi(yytext); DBG("NUMBER "); return NUMBER; }
+"."			{ DBG(". "); return '.'; }
+[a-zA-Z][a-zA-Z0-9]*			{ yylval = getvar(yytext); DBG("ID "); return ID; }
+[a-zA-Z_]?\"(\\.|[^\\"])*\"		{ DBG("STRING "); return STRING; }
 
-	/* FIXME: yylval = (char *) tá quebrando o programa */
-[\-+*/^%]		{ printf("BINFUNC "); /* yylval = yytext; */FIXME("achar um jeito inteligente de retornar o texto lido"); return yytext[0]; }
-[\-+^*%/]?=		{ printf("ASSIGN_OP ");/* yylval = yytext; */ return ASSIGN_OP; }
-("<"|">"|">="|"<="|"=="|"!=")	{ printf("REL_OP "); /* yylval = yytext; */ return REL_OP; }
-("++"|"--")						{ printf("INCR_DECR ");/* yylval = yytext[0];*/ return INCR_OP; }
-
-
-"("			{ printf("( "); return '('; }
-")"			{ printf(") "); return ')'; }
-"{"			{ printf("{ "); return '{'; }
-"}"			{ printf("} "); return '}'; }
-"["			{ printf("[ "); return '['; }
-"]"			{ printf("] "); return ']'; }
-","			{ printf(", "); return ','; }
-";"			{ printf("; "); return ';'; }
-"\n"		{ yylineno++; printf("\\n\n"); return FIM;}
+	/* FIXME: fazer funcionar com yylval */
+"-"			{ DBG("- "); return '-'; }
+"+"			{ DBG("+ "); return '+'; }
+"*"			{ DBG("* "); return '*'; }
+"/"			{ DBG("/ "); return '/'; }
+"%"			{ DBG("% "); return '%'; }
+"^"			{ DBG("^ "); return '^'; }
+"="			{ DBG("= "); return '='; }
+">"			{ DBG("> "); return '>'; }
+"<"			{ DBG("< "); return '<'; }
+"("			{ DBG("( "); return '('; }
+")"			{ DBG(") "); return ')'; }
+"{"			{ DBG("{ "); return '{'; }
+"}"			{ DBG("} "); return '}'; }
+"["			{ DBG("[ "); return '['; }
+"]"			{ DBG("] "); return ']'; }
+","			{ DBG(", "); return ','; }
+";"			{ DBG("; "); return ';'; }
+"\n"		{ yylineno++; DBG("\\n\n"); return FIM;}
 
 [ \t]+		/* ignore whitespace */;
 
+			/* TODO: add suport to va_args debug.h functions */
 .			{ printf("error: unknown token \"%s\" at line %d.\n", yytext, yylineno); exit(-3); }
 %%
 
@@ -68,7 +71,7 @@ loop:
 
 //	if (c != 0)
 //		putchar(c1);
-	printf("END OF COMMENTS ");
+	DBG("END OF COMMENTS ");
 }
 /*
 main(int argc, char *argv[]) {
@@ -79,6 +82,5 @@ main(int argc, char *argv[]) {
 			usage();
 
 	yylex();
-	printf("Processed %d lines\n", yylineno);
-}
-*/
+	DBG("Processed %d lines\n", yylineno);
+}*/
