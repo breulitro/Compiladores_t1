@@ -59,6 +59,8 @@ main(int argc, char *argv[]) {
 %token ID NUMBER
 %token DEFINE LID
 
+%token INCR DECR LE GE EQ NE PLUSEQUAL MINUSEQUAL ASTERISKEQUAL SLASHEQUAL CHAPEUZINHODOVOVOEQUAL PERCENTEQUAL
+
 %token AUTO RETURN SQRT BREAK IBASE OBASE STRING INCR_OP FIM
 %%
 comandos
@@ -98,13 +100,27 @@ conditional_resto
 expression
 	:element				{ $$ = $1; }
 	/*|expression_list*/
-	|ID '=' expression		{vars[$1] = $3; TODO("Declaração implícita");}
 	|'(' element ')'
 	|'-' element
-	|INCR_DECR	{ FIXME("Bug: [\"--\"|\"++\"] ID");}
-		ID		/*{ $$ = ($1[0] == '+') ? ++vars[$2] : --vars[$2];}*/
-	|ID INCR_DECR	/*{ $$ = ($2[0] == '+') ? ++vars[$1] : --vars[$1]; }*/
-	|ID ASSIGN_OP expression	{ FIXME("deve tá quebrada, bem como '++' e '--'"); }
+	|INCR_DECR		{ FIXME("Bug: Implicit alocation not suported yet");}
+		ID			{ $$ = ($1 ? ++vars[$2] : --vars[$2]);}
+	|ID				{ FIXME("Bug: Implicit alocation not suported yet"); }
+		INCR_DECR	{ $$ = ($2 ? vars[$1]-- : vars[$1]++); }
+	|ID MINUSEQUAL	{ FIXME("Bug: Implicit alocation not suported yet");}
+		expression	{ vars[$1] -= $3; }
+	|ID PLUSEQUAL	{ FIXME("Bug: Implicit alocation not suported yet");}
+		expression	{ vars[$1] += $3; }
+	|ID ASTERISKEQUAL	{ FIXME("Bug: Implicit alocation not suported yet");}
+		expression	{ vars[$1] *= $3; }
+	|ID SLASHEQUAL	{ FIXME("Bug: Implicit alocation not suported yet");}
+		expression 	{ vars[$1] /= $3; }
+	|ID PERCENTEQUAL	{ FIXME("Bug: Implicit alocation not suported yet");}
+		expression 	{ vars[$1] %= $3; }
+	|ID CHAPEUZINHODOVOVOEQUAL	{ FIXME("Bug: Implicit alocation not suported yet");}
+		/* FIXME:checar semantica do '^=' no bc */
+		expression	{ vars[$1] ^= $3; }
+	|ID '='	{ FIXME("Bug: Implicit alocation not suported yet");}
+		expression	{ vars[$1] = $3; }
 	|element BINFUNC expression {
 		YDBG("\e[35mcaiu no [element BINFUNC expression]\n");
 		switch ($2) {
@@ -134,6 +150,11 @@ expression
 	}
 	|expression REL_OP expression
 	;
+
+INCR_DECR
+	:INCR	{ $$ = 1; }
+	|DECR	{ $$ = 0; }
+	;
 BINFUNC
 	:'+'	{ YDBG("[BINFUNC::'+'] "); $$ = 0; }
 	|'-'	{ YDBG("[BINFUNC::'-'] "); $$ = 1; }
@@ -151,20 +172,6 @@ REL_OP
 	|"=="	{ $$ = 4; }
 	;
 
-ASSIGN_OP
-	:"-="	{ $$ = 0; }
-	|"+="	{ $$ = 1; }
-	|"*="	{ $$ = 2; }
-	|"/="	{ $$ = 3; }
-	|"%="	{ $$ = 4; }
-	|"^="	{ $$ = 5; }
-	|"="	{ $$ = 6; }
-	;
-
-INCR_DECR
-	:"++"	{ $$ = 0; }
-	|"--"	{ $$ = 1; }
-	;
 element
 	:ID		{ $$ = vars[$1]; }
 	|NUMBER /* { $$ = $1 } */

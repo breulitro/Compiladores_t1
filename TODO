@@ -16,3 +16,5 @@ tkt4 - Implementar variáveis internas
 tkt5 - Melhorar a gerência de memória
 
 tkt6 - Implementar arvore de execução
+
+tkt7 - Não tá caindo fora do parser ao fim do arquivo

@@ -5,10 +5,10 @@
 #include <stdlib.h>
 #include "bc.tab.h"
 #include "bc.h"
+void yyerror(char *);
 %}
 /* %option outfile="bc.lex.c" header-file="bc.lex.h" */
 /* %option yylineno */
-
 %%
 "/*"		{ DBG("BEGIN COMMENTS "); comment(); }
 
@@ -32,6 +32,18 @@ obase		{ DBG("OBASE "); return OBASE; }
 [a-zA-Z_]?\"(\\.|[^\\"])*\"		{ DBG("STRING "); return STRING; }
 
 	/* FIXME: fazer funcionar com yylval */
+"--"		{ DBG("-- "); return DECR; }
+"++"		{ DBG("++ "); return INCR; }
+"<="		{ DBG("<= "); return LE; }
+">="		{ DBG(">= "); return GE; }
+"=="		{ DBG("== "); return EQ; }
+"!="		{ DBG("!= "); return NE; }
+"+="		{ DBG("+= "); return PLUSEQUAL; }
+"-="		{ DBG("-= "); return MINUSEQUAL; }
+"*="		{ DBG("*= "); return ASTERISKEQUAL; }
+"/="		{ DBG("/= "); return SLASHEQUAL; }
+"^="		{ DBG("^= "); return CHAPEUZINHODOVOVOEQUAL; }
+"%="		{ DBG("%= "); return PERCENTEQUAL; }
 "-"			{ DBG("- "); return '-'; }
 "+"			{ DBG("+ "); return '+'; }
 "*"			{ DBG("* "); return '*'; }
