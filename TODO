@@ -4,9 +4,12 @@ Precisamos paresear isso:
 	for (i=1;i<10;i++) print "\ni= ",i," fibo(i)= ",fibo(i)
 
 Criar token para:
-	define
-	return
-	{}
 	print
 
-Implementar comentarios
+Arrumar o retorno dos tokens BINFUNC, ASSIGN_OP, REL_OP, INCR_DECR
+
+Implementar funções, laços e condicionais
+
+Implementar variáveis internas
+
+Melhorar a gerência de memória
