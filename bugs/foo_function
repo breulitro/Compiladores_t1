@@ -1,0 +1,5 @@
+define a() a=3
+define e(x) {
+	/* auto  a, d, e, f, i, m, v, z */
+	foo = x
+}

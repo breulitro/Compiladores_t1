@@ -1,8 +1,7 @@
-a
-a=3
-++a
+define a() a=1
 a
 a++
+++a
 a
-a+=3
-a
+for(a=0;a<23;a++)
+	s++
