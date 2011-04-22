@@ -102,25 +102,25 @@ expression
 	/*|expression_list*/
 	|'(' element ')'
 	|'-' element
+			/* WARNING: Lembra de decrementar o $4 quando tirar o FIXME */
 	|INCR_DECR		{ FIXME("Bug: Implicit alocation not suported yet");}
-		ID			{ $$ = ($1 ? ++vars[$2] : --vars[$2]);}
+		ID			{ $$ = ($1 ? ++vars[$3] : --vars[$3]);}
 	|ID				{ FIXME("Bug: Implicit alocation not suported yet"); }
-		INCR_DECR	{ $$ = ($2 ? vars[$1]-- : vars[$1]++); }
+		INCR_DECR	{ $$ = ($3 ? vars[$1]++ : vars[$1]--); }
 	|ID MINUSEQUAL	{ FIXME("Bug: Implicit alocation not suported yet");}
-		expression	{ vars[$1] -= $3; }
+		expression	{ vars[$1] -= $4; }
 	|ID PLUSEQUAL	{ FIXME("Bug: Implicit alocation not suported yet");}
-		expression	{ vars[$1] += $3; }
+		expression	{ vars[$1] += $4; }
 	|ID ASTERISKEQUAL	{ FIXME("Bug: Implicit alocation not suported yet");}
-		expression	{ vars[$1] *= $3; }
+		expression	{ vars[$1] *= $4; }
 	|ID SLASHEQUAL	{ FIXME("Bug: Implicit alocation not suported yet");}
-		expression 	{ vars[$1] /= $3; }
+		expression 	{ vars[$1] /= $4; }
 	|ID PERCENTEQUAL	{ FIXME("Bug: Implicit alocation not suported yet");}
-		expression 	{ vars[$1] %= $3; }
+		expression 	{ vars[$1] %= $4; }
 	|ID CHAPEUZINHODOVOVOEQUAL	{ FIXME("Bug: Implicit alocation not suported yet");}
-		/* FIXME:checar semantica do '^=' no bc */
-		expression	{ vars[$1] ^= $3; }
+		expression	{ FIXME("checar semantica do '^=' no bc"); vars[$1] ^= $4; }
 	|ID '='	{ FIXME("Bug: Implicit alocation not suported yet");}
-		expression	{ vars[$1] = $3; }
+		expression	{ vars[$1] = $4; }
 	|element BINFUNC expression {
 		YDBG("\e[35mcaiu no [element BINFUNC expression]\n");
 		switch ($2) {
@@ -137,7 +137,8 @@ expression
 			$$ = $1 / $3;
 			break;
 		case 4:
-			$$ = $1 ^ $3;	//TODO: vide todo ver-0.1
+			FIXME("checar semantica do '^=' no bc");
+			$$ = $1 ^ $3;
 			break;
 		case 5:
 			$$ = $1 % $3;
