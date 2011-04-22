@@ -6,8 +6,7 @@ tkt0 - Precisamos paresear isso:
 tkt1 - Criar token para:
 	print
 
-tkt2 - Arrumar o retorno dos tokens BINFUNC, ASSIGN_OP, REL_OP, INCR_DECR
-	tkt2-0 - Fazer isso de uma maneira esperta.
+tkt2-0 retornar BINFUNC, ASSIGN_OP, REL_OP, INCR_DECR de uma maneira esperta.
 
 tkt3 - Implementar funções, laços e condicionais
 
@@ -18,3 +17,5 @@ tkt5 - Melhorar a gerência de memória
 tkt6 - Implementar arvore de execução
 
 tkt7 - Não tá caindo fora do parser ao fim do arquivo
+
+tkt8 - Arruma make clean prá não dar erro ao não encontrar arquivo

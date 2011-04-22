@@ -98,29 +98,19 @@ conditional_resto
 	|ELSE bloco_de_comando
 	;
 expression
-	:element				{ $$ = $1; }
+	:element		{ $$ = $1; }
 	/*|expression_list*/
 	|'(' element ')'
-	|'-' element
-			/* WARNING: Lembra de decrementar o $4 quando tirar o FIXME */
-	|INCR_DECR		{ FIXME("Bug: Implicit alocation not suported yet");}
-		ID			{ $$ = ($1 ? ++vars[$3] : --vars[$3]);}
-	|ID				{ FIXME("Bug: Implicit alocation not suported yet"); }
-		INCR_DECR	{ $$ = ($3 ? vars[$1]++ : vars[$1]--); }
-	|ID MINUSEQUAL	{ FIXME("Bug: Implicit alocation not suported yet");}
-		expression	{ vars[$1] -= $4; }
-	|ID PLUSEQUAL	{ FIXME("Bug: Implicit alocation not suported yet");}
-		expression	{ vars[$1] += $4; }
-	|ID ASTERISKEQUAL	{ FIXME("Bug: Implicit alocation not suported yet");}
-		expression	{ vars[$1] *= $4; }
-	|ID SLASHEQUAL	{ FIXME("Bug: Implicit alocation not suported yet");}
-		expression 	{ vars[$1] /= $4; }
-	|ID PERCENTEQUAL	{ FIXME("Bug: Implicit alocation not suported yet");}
-		expression 	{ vars[$1] %= $4; }
-	|ID CHAPEUZINHODOVOVOEQUAL	{ FIXME("Bug: Implicit alocation not suported yet");}
-		expression	{ FIXME("checar semantica do '^=' no bc"); vars[$1] ^= $4; }
-	|ID '='	{ FIXME("Bug: Implicit alocation not suported yet");}
-		expression	{ vars[$1] = $4; }
+	|'-' element	{ $$ = -$2; }
+	|INCR_DECR ID	{ $$ = ($1 ? ++vars[$2] : --vars[$2]);}
+	|ID	INCR_DECR	{ $$ = ($2 ? vars[$1]++ : vars[$1]--); }
+	|ID MINUSEQUAL expression	{ vars[$1] -= $3; }
+	|ID PLUSEQUAL expression	{ vars[$1] += $3; }
+	|ID ASTERISKEQUAL expression	{ vars[$1] *= $3; }
+	|ID SLASHEQUAL expression 	{ vars[$1] /= $3; }
+	|ID PERCENTEQUAL expression 	{ vars[$1] %= $3; }
+	|ID CHAPEUZINHODOVOVOEQUAL expression	{ FIXME("checar semantica do '^=' no bc"); vars[$1] ^= $3; }
+	|ID '=' expression	{ vars[$1] = $3; }
 	|element BINFUNC expression {
 		YDBG("\e[35mcaiu no [element BINFUNC expression]\n");
 		switch ($2) {
@@ -149,7 +139,12 @@ expression
 		}
 
 	}
-	|expression REL_OP expression
+	|expression '>' expression	{ $$ = $1 > $3; }
+	|expression '<' expression	{ $$ = $1 < $3; }
+	|expression GE expression	{ $$ = $1 >= $3; }
+	|expression LE expression	{ $$ = $1 <= $3; }
+	|expression EQ expression	{ $$ = $1 == $3; }
+	|expression NE expression	{ $$ = $1 != $3; }
 	;
 
 INCR_DECR
@@ -163,14 +158,6 @@ BINFUNC
 	|'/'	{ YDBG("[BINFUNC::'/'] "); $$ = 3; }
 	|'^'	{ YDBG("[BINFUNC::'^'] "); $$ = 4; }
 	|'%'	{ YDBG("[BINFUNC::'%'] "); $$ = 5; }
-	;
-
-REL_OP
-	:"<="	{ $$ = 0; }
-	|">="	{ $$ = 1; }
-	|">"	{ $$ = 2; }
-	|"<"	{ $$ = 3; }
-	|"=="	{ $$ = 4; }
 	;
 
 element
