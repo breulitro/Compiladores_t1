@@ -20,6 +20,7 @@ for			{ DBG("FOR "); return FOR; }
 define		{ DBG("DEFINE "); return DEFINE; }
 auto		{ DBG("AUTO "); return AUTO; }
 return		{ DBG("RETURN "); return RETURN; }
+print		{ DBG("PRINT "); return PRINT; }
 
 sqrt		{ DBG("SQRT "); return SQRT; }
 break		{ DBG("BREAK "); return BREAK; }
